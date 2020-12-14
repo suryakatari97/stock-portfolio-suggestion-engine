@@ -44,9 +44,15 @@ def convertToString(strategyList):
         companies = companies + ',' + ','.join(stocks[currStrategy])
     return companies
 
+def get_date(delta):
+    format = '%Y-%m-%d'
+    return (datetime.today() - timedelta(days=delta)).strftime(format)
+
 def suggest_stocks(amount, strategyList):
 
-    allocated_stocks = {}
+    #allocated_stocks = {}
+    resp_allocated_stocks = []
+    param_allocated_stocks = {}
     pie_chart_data = []
 
     price_details = get_price_details(strategyList)
@@ -61,21 +67,24 @@ def suggest_stocks(amount, strategyList):
         stock_price = float(data.get("price"))
         number_of_stocks = int((amount_per_stock + remaining_price)/stock_price)
         remaining_price = (remaining_price + amount_per_stock) - (number_of_stocks * stock_price)
-        allocated_stocks[symbol] = {"stocks": number_of_stocks, "price": stock_price, "strategy": data.get("strategy")}
+        param_allocated_stocks[symbol] = {"stocks": number_of_stocks, "price": stock_price, "strategy": data.get("strategy")}
+        resp_allocated_stocks.append({"symbol":symbol, "stocks": number_of_stocks, "price": stock_price, "strategy": data.get("strategy")})
         pie_chart_data.append({"name": symbol, "value": number_of_stocks * stock_price})
 
-    return {"allocation": allocated_stocks, "weekly_trend": get_history(strategyList, allocated_stocks),
+    return {"allocation": resp_allocated_stocks, "weekly_trend": get_history(strategyList, param_allocated_stocks),
             "pie_chart_data": pie_chart_data}
 
 
 def get_history(strategyList, allocated_stocks):
     # "https://financialmodelingprep.com/api/v3/historical-price-full/AAPL,MSFT?from=2019-12-10&to=2019-12-12"
 
-    #history_data = {"total": {}}
     history_data = []
     
-    start_date = (datetime.today() - timedelta(days=8)).strftime('%Y-%m-%d')
-    end_date = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
+    #start_date = (datetime.today() - timedelta(days=8)).strftime('%Y-%m-%d')
+    #end_date = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
+    start_date = get_date(8)
+    end_date = get_date(1)
+    
     filter_date = '?from={}&to={}'.format(start_date, end_date)
 
     for strategy in strategyList:
@@ -97,32 +106,22 @@ def get_history(strategyList, allocated_stocks):
                     history_idx = history_data.index(hist_elem)
 
                 final_allotment = trend['close'] * allocated_stocks.get(symbol).get("stocks")
-
-                # history_data[symbol][date] = final_allotment
                 history_data[history_idx][symbol] = final_allotment
                 if history_data[history_idx].get("Total Portfolio") is None:
                     history_data[history_idx]["Total Portfolio"] = final_allotment
                 else:
                     history_data[history_idx]["Total Portfolio"] += final_allotment
 
-                # if history_data["total"].get(date) is None:
-                #     history_data["total"][date] = final_allotment
-                # else:
-                #     history_data["total"][date] += final_allotment
-
     # add today's portfolio value to weekly trend
     hist_elem = {'name': 'Latest Value'}
     history_data.append(hist_elem)
     history_idx = history_data.index(hist_elem)
-    portfolio_value = 0
+    total_value = 0
     for symbol, data in allocated_stocks.items():
-        history_data[history_idx][symbol] = data.get("stocks") * data.get("price")
-        # history_data.get(symbol)["latest"] = data.get("stocks") * data.get("price")
-        portfolio_value += data.get("stocks") * data.get("price")
-    # date_today = (datetime.today()).strftime('%Y-%m-%d')
-    # history_data["total"]["latest"] = portfolio_value
-    history_data[history_idx]["Total Portfolio"] = portfolio_value
-
+        calculated_price =  data.get("price") * data.get("stocks")
+        history_data[history_idx][symbol] =  calculated_price
+        total_value += calculated_price
+    history_data[history_idx]["Total Portfolio"] = total_value
     return history_data
 
 
