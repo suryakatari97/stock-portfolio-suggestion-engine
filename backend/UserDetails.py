@@ -4,11 +4,14 @@ users = []
 
 def user_signup(email, password, firstName, lastName):
 
-    token = str(uuid.uuid4())
+    token = generateToken()
 
-    # check if user exists
-    index = next((users.index(u) for u in users if u['email'] == email), None)
-
+    # check if user is registered already
+    registeredUser = (users.index(usr) for usr in users if usr['email'] == email)
+    #print(existedUser)
+    index = next(registeredUser, None)
+    #print(users)
+    #print("index is:", index)
     if index is not None:
         return
 
@@ -18,10 +21,12 @@ def user_signup(email, password, firstName, lastName):
 
 def user_login(email, password):
 
-    token = str(uuid.uuid4())
+    token = generateToken()
 
-    # check if user exists
-    index = next((users.index(u) for u in users if u['email'] == email and u['password'] == password), None)
+    # check if user is registered already
+    registeredUser = (users.index(usr) for usr in users if usr['email'] == email and usr['password'] == password)
+
+    index = next(registeredUser, None)
 
     if index is None:
         return
@@ -34,7 +39,8 @@ def user_login(email, password):
 def user_logout(token):
 
     # check if user exists
-    index = next((users.index(u) for u in users if u['token'] == token), None)
+    registeredUser = (users.index(usr) for usr in users if usr['token'] == token)
+    index = next(registeredUser, None)
 
     if index is None:
         return
@@ -47,9 +53,13 @@ def user_logout(token):
 def check_login(token):
 
     # check if user exists
-    index = next((users.index(u) for u in users if u['token'] == token), None)
+    registeredUser = (users.index(usr) for usr in users if usr['token'] == token)
+    index = next(registeredUser, None)
 
     if index is None:
         return
 
     return users[index]
+
+def generateToken():
+    return str(uuid.uuid4())

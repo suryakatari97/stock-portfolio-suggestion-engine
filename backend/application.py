@@ -1,7 +1,7 @@
 import json
 import UserDetails
 from flask import Flask, request, Response
-import StockManager
+import StockSuggestions
 from flask_cors import CORS, cross_origin
 import re
 
@@ -28,7 +28,6 @@ def stocks_suggestions():
     if amount < 5000:
         error = "Please provide an amount greater than $5000"
         status = 500
-
     
     if len(strategyList) == 0:
         error = "Select at-least one strategy"
@@ -39,9 +38,10 @@ def stocks_suggestions():
         error = "Please select no more than two strategies"
 
     if status is not 500:
-        allocations = StockManager.suggest_stocks(amount, strategyList)
-
-    return json.dumps(allocations), 200
+        allocations = StockSuggestions.suggest_stocks(amount, strategyList)
+        return json.dumps(allocations), 200
+    else:
+         return json.dumps({"error": error}), status
 
 
 @application.route('/signup', methods=['POST'])
@@ -68,9 +68,7 @@ def user_signup():
         error = "Please Provide Email"
         status = 500
 
-    EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
-
-    if not EMAIL_REGEX.match(email):
+    if not valid_email(email):
         error = "Email is not valid"
         status = 500
     
@@ -92,6 +90,9 @@ def user_signup():
     else:
         return json.dumps({"error": error}), status
 
+def valid_email(email):
+    EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
+    return EMAIL_REGEX.match(email)
 
 @application.route('/login', methods=['POST'])
 @cross_origin(origin='*')
