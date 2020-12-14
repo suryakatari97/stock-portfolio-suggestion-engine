@@ -9,6 +9,24 @@ stocks = {
     'Value Investing': ["INTC", "BABA", "GE"]
 }
 
+companyNames = {
+    "AAPL" : "Apple Inc",
+    "TSLA" : "Tesla Inc",
+    "ADBE" : "Adobe Inc",
+    "OXLC" : "Oxford Lane Capital Corp",
+    "ECC": "Eagle Point CR/COM",
+    "AMD": "Advanced Micro Devices, Inc",
+    "VOO": "VANGUARD IX FUN/S&P 500",
+    "VTI": "VANGUARD IX FUN",
+    "ILTB": "ISHARES TR",
+    "NVDA": "NVIDIA Corporation",
+    "MU": "Micron Technology, Inc",
+    "CSCO": "Cisco Systems, Inc",
+    "INTC": "Intel Corporation",
+    "BABA": "Alibaba Group Holding",
+    "GE": "General Electric Company"
+}
+
 apikey="8df9d2285918ef03c05b5f216583a6cc"
 root_url ='https://financialmodelingprep.com/api/v3/'
 
@@ -68,7 +86,7 @@ def suggest_stocks(amount, strategyList):
         number_of_stocks = int((amount_per_stock + remaining_price)/stock_price)
         remaining_price = (remaining_price + amount_per_stock) - (number_of_stocks * stock_price)
         param_allocated_stocks[symbol] = {"stocks": number_of_stocks, "price": stock_price, "strategy": data.get("strategy")}
-        resp_allocated_stocks.append({"symbol":symbol, "stocks": number_of_stocks, "price": stock_price, "strategy": data.get("strategy")})
+        resp_allocated_stocks.append({"symbol": symbol, "companyName": companyNames[symbol], "totalHoldingValue": number_of_stocks * stock_price ,"numOfStocks": number_of_stocks, "latestPrice": stock_price, "strategy": data.get("strategy")})
         pie_chart_data.append({"name": symbol, "value": number_of_stocks * stock_price})
 
     return {"allocation": resp_allocated_stocks, "weekly_trend": get_history(strategyList, param_allocated_stocks),
