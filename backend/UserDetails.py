@@ -2,7 +2,7 @@ import uuid
 users = []
 
 
-def signup(email, password, fn, ln):
+def user_signup(email, password, firstName, lastName):
 
     token = str(uuid.uuid4())
 
@@ -12,11 +12,11 @@ def signup(email, password, fn, ln):
     if index is not None:
         return
 
-    users.append({'email': email, 'password': password, 'token': token, 'fn': fn, 'ln': ln})
+    users.append({'email': email, 'password': password, 'token': token, 'firstName': firstName, 'lastName': lastName})
     return token
 
 
-def login(email, password):
+def user_login(email, password):
 
     token = str(uuid.uuid4())
 
@@ -31,7 +31,7 @@ def login(email, password):
     return token
 
 
-def logout(token):
+def user_logout(token):
 
     # check if user exists
     index = next((users.index(u) for u in users if u['token'] == token), None)

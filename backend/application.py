@@ -14,7 +14,6 @@ application.config['CORS_HEADERS'] = 'Content-Type'
 # Serve front-end
 # Sign up and Login functionality
 # Allocate money in stocks
-anjalibandaru2
 
 @application.route('/suggestStocks', methods=['POST'])
 @cross_origin(origin='*')
@@ -80,7 +79,7 @@ def user_signup():
         status = 500
 
     if status is not 500:
-        token = UserDetails.signup(email, password, firstName, lastName)
+        token = UserDetails.user_signup(email, password, firstName, lastName)
 
     if token is None:
         error = "Please provide another email"
@@ -112,7 +111,7 @@ def user_login():
         status = 500
 
     if status is not 500:
-        token = UserDetails.login(email, password)
+        token = UserDetails.user_login(email, password)
 
     if token is None:
         status = 500
@@ -162,7 +161,7 @@ def user_logout():
     if token is None:
         return json.dumps({"code": 200}), 200
 
-    UserDetails.logout(token)
+    UserDetails.user_logout(token)
 
     response = Response(json.dumps({'code': 200}))
     return response
