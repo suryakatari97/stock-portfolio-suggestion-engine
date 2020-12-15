@@ -40,3 +40,39 @@
 .fixwidth {
   margin-top: 20px;
 }
+
+.landing {
+  position: relative;
+  background: url('./components/stock-market.png') no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-top: -24px;
+  margin-bottom: -50px;
+}
+
+.landing-inner {
+  padding-top: 80px;
+}
+
+.dark-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.card-chart{
+  margin-top: 25px;
+  margin-bottom:20px;
+  top: 0;
+  transition: top ease 0.5s;
+}
+
+.card-chart:hover{
+  top: -10px;
+}
+#submitbtn{
+  margin-bottom: 20px;
+}

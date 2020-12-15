@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Navbar from './Navbar';
+import Navbar from './Nav';
 
  class LandingPage extends Component {
     render() {

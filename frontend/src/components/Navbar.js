@@ -24,12 +24,6 @@ import React, { Component } from 'react';
             <span className="navbar-toggler-icon"></span>
           </button>
 
-        
-            
-            
-
-            
-
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 <a

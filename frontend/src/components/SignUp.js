@@ -64,7 +64,7 @@ class SignUp extends Component {
         console.log("add project not 2xx response");
         swal({
             title: "Sorry",
-            text: "already exists",
+            text: "Please enter valid details",
             icon: "error",
             button: "OK",
           })
@@ -94,6 +94,7 @@ class SignUp extends Component {
                   <input
                     type="text"
                     placeholder="firstName"
+                    className="form-control form-control-lg"
                     name="firstName"
                     value={this.state.firstName}
                     onChange={this.onChange}
@@ -102,6 +103,7 @@ class SignUp extends Component {
                 <div className="form-group">
                   <input
                     type="text"
+                    className="form-control form-control-lg"
                     placeholder="lastName"
                     name="lastName"
                     value={this.state.lastName}
@@ -111,6 +113,7 @@ class SignUp extends Component {
                 <div className="form-group">
                   <input
                     type="email"
+                    className="form-control form-control-lg"
                     placeholder="Email Address"
                     name="email"
                     value={this.state.email}
@@ -121,6 +124,7 @@ class SignUp extends Component {
                 </div>
                 <div className="form-group">
                   <input
+                    className="form-control form-control-lg"
                     type="password"
                     placeholder="Password"
                     name="password"

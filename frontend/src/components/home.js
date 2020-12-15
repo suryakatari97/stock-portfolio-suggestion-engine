@@ -12,7 +12,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from "axios";
 import swal from 'sweetalert';
-import { Redirect } from 'react-router';
 import { Pie } from 'react-chartjs-2';
 import Navbar from "./Navbar";
 import {
@@ -95,26 +94,11 @@ import {ResponsiveContainer, ComposedChart, Line, Area,XAxis, YAxis, CartesianGr
   };
     render() {
         let stockstable;
-        // if (this.state.stocks != undefined) {
-        //     var stocksdata = this.state.stocks
-        //     console.log(stocksdata);
-        //     //stockstable = []
-        //     for(let i=0; i<stocksdata.length; i++){
-        //         let stock = stocksdata[i]
-        //         stockstable.push(
-        //             <tr>
-        //                  <td>{stock.price}</td>
-        //                  <td>
-        //                  </td>
-        //             </tr>
-        //         )
-        //     }
-        // }
         const data = {
             labels: this.state.comName,
             datasets: [
               {
-                label: 'Total Money Spent($)',
+                label: 'Total Investment($)',
                 data: this.state.value,
                 backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#f8981c","#a9014b","#3f0f3e"]
               }
@@ -123,7 +107,7 @@ import {ResponsiveContainer, ComposedChart, Line, Area,XAxis, YAxis, CartesianGr
         const options = {
             title: {
               display: true,
-              text: 'Total Money Spent($)'
+              text: 'Total investment($)'
             }
           };
         
@@ -174,7 +158,7 @@ import {ResponsiveContainer, ComposedChart, Line, Area,XAxis, YAxis, CartesianGr
             <div className={"form-element"}>
                 <div className="fixwidth"> </div>
           <FormControl component="fieldset" className={""}>
-            <FormLabel component="legend">Pick one or two investment Strategies</FormLabel>
+            <FormLabel component="legend">Select Max of two investment Strategies</FormLabel>
             <FormGroup>
                   {names.map(name => (
                     <FormControlLabel
@@ -186,13 +170,13 @@ import {ResponsiveContainer, ComposedChart, Line, Area,XAxis, YAxis, CartesianGr
                   ))}
             </FormGroup>
             {this.state.strategies.length > 2 &&
-            <FormHelperText className={"fix-width"} error={true}>Maximum two strategies can be picked at a time.</FormHelperText>}
+            <FormHelperText className={"fix-width"} error={true}>Maximum two strategies can be selected at a time.</FormHelperText>}
             {this.state.strategies.length <= 2 &&
             <div className="fix-width"> </div>}
           </FormControl>
 
         </div>
-                     <Button disabled={this.state.strategies.length < 1 || this.state.strategies.length > 2
+                     <Button id="submitbtn" disabled={this.state.strategies.length < 1 || this.state.strategies.length > 2
         || this.state.loading || this.state.amount<5000}
                 variant="contained" color="primary" className={"form-element submit-button"}
                 onClick={this.handleSubmit}>
@@ -227,9 +211,9 @@ import {ResponsiveContainer, ComposedChart, Line, Area,XAxis, YAxis, CartesianGr
     {this.state.stocks.length > 0 ? (
         <Card className="card-chart">
                     <CardHeader>
-                        <h5 className="card-category">Store</h5>
+                        
                       <CardTitle tag="h3">
-                          <i className="tim-icons icon-bell-55 text-info" /> Expenditure</CardTitle>
+                          <i className="tim-icons icon-bell-55 text-info" /> Investment</CardTitle>
                       {/* <p className="card-category">Money spent</p> */}
                     </CardHeader>
                     <CardBody>
@@ -237,14 +221,16 @@ import {ResponsiveContainer, ComposedChart, Line, Area,XAxis, YAxis, CartesianGr
                     </CardBody>
                     <CardFooter>
                       <div className="stats">
-                        <i className="fas fa-bars" /> Category wise
-                        Expenditure
+                        <i className="fas fa-bars" /> Company wise
+                        Investment
                       </div>
                     </CardFooter>
                   </Card>
 
     ) : ('')}
     </Col>
+    </Row>
+    <Row>
     <Col>
     {this.state.stocks.length > 0 ? (
         <ResponsiveContainer width={"100%"} height={400}>
