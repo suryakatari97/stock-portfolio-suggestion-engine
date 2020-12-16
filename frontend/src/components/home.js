@@ -195,7 +195,7 @@ import {ResponsiveContainer, ComposedChart, Line, Area,XAxis, YAxis, CartesianGr
                                                     <th>Company Name</th>
                                                     <th>No.of Stocks</th>
                                                     <th>Latest Price</th>
-                                                    <th>Holding Value</th>
+                                                    <th>Total Value</th>
                                                     <th>Strategy</th>
                                                 </tr>
                                             </thead>
@@ -226,6 +226,7 @@ import {ResponsiveContainer, ComposedChart, Line, Area,XAxis, YAxis, CartesianGr
                       </div>
                     </CardFooter>
                   </Card>
+                 
 
     ) : ('')}
     </Col>
@@ -233,7 +234,9 @@ import {ResponsiveContainer, ComposedChart, Line, Area,XAxis, YAxis, CartesianGr
     <Row>
     <Col>
     {this.state.stocks.length > 0 ? (
+        
         <ResponsiveContainer width={"100%"} height={400}>
+           
         <ComposedChart data={this.state.linedata}
                        margin={{top: 20, right: 20, bottom: 20, left: 20}}>
           <CartesianGrid strokeDasharray="3 3"/>
