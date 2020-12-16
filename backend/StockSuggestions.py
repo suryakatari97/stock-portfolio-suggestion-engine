@@ -1,19 +1,45 @@
 import requests
 from datetime import datetime, timedelta
-
+#"TXN"
+# "AMZN", "GOOGL"
+#"ECL", "NEE"
+# "JNJ"
 stocks = {
-    'Ethical Investing': ["AAPL", "TSLA", "ADBE"],
-    'Growth Investing': ["OXLC", "ECC", "AMD"],
-    'Index Investing': ["VOO", "VTI", "ILTB"],
-    'Quality Investing': ["NVDA", "MU", "CSCO"],
-    'Value Investing': ["INTC", "BABA", "GE"]
+    'Ethical Investing': ["TSLA", "CRM", "FLR"],
+    'Growth Investing': ["AAPL", "FB", "MSFT"],
+    'Index Investing': [ "SPY", "VOO", "IVV"],
+    'Quality Investing': ["TCS", "ABBV", "AVGO"],
+    'Value Investing': [ "DIS", "JPM", "VZ"]
 }
 
 companyNames = {
+    "FNILX":"Fidelity Zero large cap index",
+    "SPY" : "SPDR S&P 500 ETF",
+    "VOO" : "Vanguard S&P 500 ETF",
+    "IVV" : "iShare core S&P 500 ETF",
+    "SWPPX" : "Schwab S&P 500 Index Fund",
+    "TCS"  :"Tata consulting services",
+    "ABBV" :"Abbvie",
+    "AVGO" :"Broadcom",
+    "ECL"  :"Ecolab",
+    "NEE"  :"NextEra energy",
     "AAPL" : "Apple Inc",
+    "CRM"  : "Salesforce",
     "TSLA" : "Tesla Inc",
     "ADBE" : "Adobe Inc",
-    "OXLC" : "Oxford Lane Capital Corp",
+    "AAPL" : "Apple",
+    "FLR"  : "Fluor",
+    "TXN"  : "Texas Instruments",
+    "BRK.B"  : "Berkshire Hathaway class B",
+    "DIS" : "Walt Disney",
+    "VZ" : "Verizon",
+    "JNJ" : "Johnson and Johnson",
+    "JPM" : "JP Morgan chase and co",
+    "HNNMY" : "Hennes and Mauritz AB",
+    "FB"   : "Facebook",
+    "MSFT" : "Microsoft",
+    "AMZN" : "Amazon",
+    "GOOGL" : "Alphabet class A",
     "ECC": "Eagle Point CR/COM",
     "AMD": "Advanced Micro Devices, Inc",
     "VOO": "VANGUARD IX FUN/S&P 500",
@@ -27,7 +53,7 @@ companyNames = {
     "GE": "General Electric Company"
 }
 
-apikey="8df9d2285918ef03c05b5f216583a6cc"
+apikey="b20d42fa67bbc5730606055df79afa8f"
 root_url ='https://financialmodelingprep.com/api/v3/'
 
 
@@ -54,7 +80,9 @@ def request_price_Values(companies):
 
 def request_historical_data(symbol, filter_date):
     historical_price = 'historical-price-full/'
-    return requests.get(root_url + historical_price + symbol + filter_date +  "&apikey=" + apikey)
+    full_url = root_url + historical_price + symbol + filter_date +  "&apikey=" + apikey
+    #print(full_url)
+    return requests.get(full_url)
 
 def convertToString(strategyList):
     companies = ''
@@ -111,6 +139,7 @@ def get_history(strategyList, allocated_stocks):
             if response.status_code != 200:
                 Exception("API Error")
             response_json = response.json()
+            #print(response_json)
             symbol = response_json['symbol']
             # history_data[symbol] = {}
 
